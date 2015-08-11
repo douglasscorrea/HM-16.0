@@ -40,7 +40,9 @@
 
 #include <list>
 #include <ostream>
-
+//DI_BEGIN
+#include "floatingClass.h"
+//DI_END
 #include "TLibEncoder/TEncTop.h"
 #include "TLibVideoIO/TVideoIOYuv.h"
 #include "TLibCommon/AccessUnit.h"
@@ -91,8 +93,10 @@ protected:
 public:
   TAppEncTop();
   virtual ~TAppEncTop();
-
-  Void        encode      ();                               ///< main encoding function
+  //DIBEGIN
+  //Adicionando parametros no encode
+  Void        encode      (floatingClass *acessData);                               ///< main encoding function
+  //DIEND
   TEncTop&    getTEncTop  ()   { return  m_cTEncTop; }      ///< return encoder class pointer reference
 
 };// END CLASS DEFINITION TAppEncTop

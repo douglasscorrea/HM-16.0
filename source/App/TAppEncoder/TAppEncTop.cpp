@@ -414,8 +414,13 @@ Void TAppEncTop::xInitLib(Bool isFieldCoding)
  - destroy internal class
  .
  */
-Void TAppEncTop::encode()
+//DI BEGIN
+//Adicionando parametros no encode
+Void TAppEncTop::encode(floatingClass *acessData)
 {
+  //lendo dado do AppEncTop.cpp e salvando na classe
+  acessData->maxTlayer = MAX_TLAYER;
+//DI END
   fstream bitstreamFile(m_pchBitstreamFile, fstream::binary | fstream::out);
   if (!bitstreamFile)
   {

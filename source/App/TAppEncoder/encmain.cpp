@@ -37,6 +37,9 @@
 
 #include <time.h>
 #include <iostream>
+//DI_Begin
+#include "floatingClass.h"
+//DI_End
 #include "TAppEncTop.h"
 #include "TAppCommon/program_options_lite.h"
 
@@ -55,6 +58,9 @@ double time_tile[100];
 int main(int argc, char* argv[])
 {
   TAppEncTop  cTAppEncTop;
+  //DI_Begin
+  floatingClass acessData;
+  //DI_END
   
   //DANIEL BEGIN
   time_perCU = fopen("time_perCU.txt","w");
@@ -103,8 +109,14 @@ int main(int argc, char* argv[])
   clock_t lBefore = clock();
 
   // call encoding function
-  cTAppEncTop.encode();
-
+  //DIBEGIN
+  //Adicionando parametros no encode
+  cTAppEncTop.encode(&acessData);
+  
+  printf("Dado TAppEncTop: %d\n", acessData.getMaxTlayer());
+  //printf("Dado TEncTop: %d\n", acessData.getNumCoded());
+  //DI_END
+  
   // ending time
   dResult = (Double)(clock()-lBefore) / CLOCKS_PER_SEC;
   printf("\n Total Time: %12.3f sec.\n", dResult);
