@@ -13,9 +13,11 @@ class floatingClass
     
 public:
     int maxTlayer;
-    int numCoded;
-    int getNumCoded () { return numCoded; }
+    int testEncTop;
+    int testGOP;
+    int getTestEncTop () { return testEncTop; }
     int getMaxTlayer () { return maxTlayer; }
+    int getTestGOP () { return testGOP; }
 
 };
 

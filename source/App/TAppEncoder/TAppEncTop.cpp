@@ -415,11 +415,11 @@ Void TAppEncTop::xInitLib(Bool isFieldCoding)
  .
  */
 //DI BEGIN
-//Adicionando parametros no encode
-Void TAppEncTop::encode(floatingClass *acessData)
+//Adicionando argumento no encode
+Void TAppEncTop::encode(floatingClass *acessAppEncTop)
 {
   //lendo dado do AppEncTop.cpp e salvando na classe
-  acessData->maxTlayer = MAX_TLAYER;
+  acessAppEncTop->maxTlayer = MAX_TLAYER;
 //DI END
   fstream bitstreamFile(m_pchBitstreamFile, fstream::binary | fstream::out);
   if (!bitstreamFile)
@@ -483,11 +483,18 @@ Void TAppEncTop::encode(floatingClass *acessData)
       m_iFrameRcvd--;
       m_cTEncTop.setFramesToBeEncoded(m_iFrameRcvd);
     }
-
+    //DI BEGIN
+    //adicionando argumentos na chamada das funções
     // call encoding function for one frame
-    if ( m_isField ) m_cTEncTop.encode( bEos, flush ? 0 : pcPicYuvOrg, flush ? 0 : &cPicYuvTrueOrg, snrCSC, m_cListPicYuvRec, outputAccessUnits, iNumEncoded, m_isTopFieldFirst );
-    else             m_cTEncTop.encode( bEos, flush ? 0 : pcPicYuvOrg, flush ? 0 : &cPicYuvTrueOrg, snrCSC, m_cListPicYuvRec, outputAccessUnits, iNumEncoded );
+    if ( m_isField ) m_cTEncTop.encode(&acessEncTop, bEos, flush ? 0 : pcPicYuvOrg, flush ? 0 : &cPicYuvTrueOrg, snrCSC, m_cListPicYuvRec, outputAccessUnits, iNumEncoded, m_isTopFieldFirst );
+    else             m_cTEncTop.encode(&acessEncTop, bEos, flush ? 0 : pcPicYuvOrg, flush ? 0 : &cPicYuvTrueOrg, snrCSC, m_cListPicYuvRec, outputAccessUnits, iNumEncoded );
+    
+    //recebendo teste do TEncTop
+    acessAppEncTop->testEncTop = acessEncTop.testEncTop;
+    acessAppEncTop->testGOP = acessEncTop.testGOP;
 
+    //DI END
+    
     // write bistream to file if necessary
     if ( iNumEncoded > 0 )
     {

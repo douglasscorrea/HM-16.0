@@ -58,6 +58,9 @@
 #include "TEncRateCtrl.h"
 #include <vector>
 
+//DI BEGIN
+#include "../../App/TAppEncoder/floatingClass.h"
+//DI END
 //! \ingroup TLibEncoder
 //! \{
 
@@ -126,7 +129,7 @@ private:
   Bool                    m_pictureTimingSEIPresentInAU;
   Bool                    m_nestedBufferingPeriodSEIPresentInAU;
   Bool                    m_nestedPictureTimingSEIPresentInAU;
-public:
+public:    
   TEncGOP();
   virtual ~TEncGOP();
 
@@ -134,8 +137,11 @@ public:
   Void  destroy     ();
 
   Void  init        ( TEncTop* pcTEncTop );
-  Void  compressGOP ( Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rcListPic, TComList<TComPicYuv*>& rcListPicYuvRec,
+  //DI BEGIN
+  //adicionando parâmetros
+  Void  compressGOP ( floatingClass *acessGOP, Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rcListPic, TComList<TComPicYuv*>& rcListPicYuvRec,
                       std::list<AccessUnit>& accessUnitsInGOP, Bool isField, Bool isTff, const InputColourSpaceConversion snr_conversion, const Bool printFrameMSE );
+  //DI END
   Void  xAttachSliceDataToNalUnit (OutputNALUnit& rNalu, TComOutputBitstream*& rpcBitstreamRedirect);
 
 

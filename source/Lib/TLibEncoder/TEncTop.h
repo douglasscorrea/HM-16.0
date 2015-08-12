@@ -57,6 +57,10 @@
 #include "TEncSampleAdaptiveOffset.h"
 #include "TEncPreanalyzer.h"
 #include "TEncRateCtrl.h"
+
+//DI BEGIN
+#include "../../App/TAppEncoder/floatingClass.h"
+//DI END
 //! \ingroup TLibEncoder
 //! \{
 
@@ -131,6 +135,9 @@ protected:
   Void  xInitRPS          (Bool isFieldCoding);           ///< initialize PPS from encoder options
 
 public:
+  //DI BEGIN
+  floatingClass acessGOP;
+  //DI END
   TEncTop();
   virtual ~TEncTop();
 
@@ -178,20 +185,22 @@ public:
   // -------------------------------------------------------------------------------------------------------------------
   // encoder function
   // -------------------------------------------------------------------------------------------------------------------
-
+  
+  //DI BEGIN
+  //adicionando parametros à assinatura do método
   /// encode several number of pictures until end-of-sequence
-  Void encode( Bool bEos,
+  Void encode( floatingClass *acessEncTop, Bool bEos,
                TComPicYuv* pcPicYuvOrg,
                TComPicYuv* pcPicYuvTrueOrg, const InputColourSpaceConversion snrCSC, // used for SNR calculations. Picture in original colour space.
                TComList<TComPicYuv*>& rcListPicYuvRecOut,
                std::list<AccessUnit>& accessUnitsOut, Int& iNumEncoded );
 
   /// encode several number of pictures until end-of-sequence
-  Void encode( Bool bEos, TComPicYuv* pcPicYuvOrg,
+  Void encode( floatingClass *acessEncTop, Bool bEos, TComPicYuv* pcPicYuvOrg,
                TComPicYuv* pcPicYuvTrueOrg, const InputColourSpaceConversion snrCSC, // used for SNR calculations. Picture in original colour space.
                TComList<TComPicYuv*>& rcListPicYuvRecOut,
                std::list<AccessUnit>& accessUnitsOut, Int& iNumEncoded, Bool isTff);
-
+  //DI END
   Void printSummary(Bool isField) { m_cGOPEncoder.printOutSummary (m_uiNumAllPicCoded, isField, m_printMSEBasedSequencePSNR, m_printSequenceMSE); }
 
 };

@@ -531,7 +531,8 @@ Void TEncGOP::xCreateLeadingSEIMessages (/*SEIMessages seiMessages,*/ AccessUnit
 // ====================================================================================================================
 // Public member functions
 // ====================================================================================================================
-Void TEncGOP::compressGOP( Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rcListPic,
+//DI - adicionando argumento
+Void TEncGOP::compressGOP( floatingClass *acessGOP, Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rcListPic,
                            TComList<TComPicYuv*>& rcListPicYuvRecOut, std::list<AccessUnit>& accessUnitsInGOP,
                            Bool isField, Bool isTff, const InputColourSpaceConversion snr_conversion, const Bool printFrameMSE )
 {
@@ -566,11 +567,17 @@ Void TEncGOP::compressGOP( Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rc
   UInt *accumBitsDU = NULL;
   UInt *accumNalsDU = NULL;
   SEIDecodingUnitInfo decodingUnitInfoSEI;
-
+  
 #if EFFICIENT_FIELD_IRAP
   Int IRAPGOPid = -1;
   Bool IRAPtoReorder = false;
   Bool swapIRAPForward = false;
+  
+  //DI BEGIN
+  //usando IRAPGOPid como teste
+  acessGOP->testGOP = IRAPGOPid;
+  //DI END
+  
   if(isField)
   {
     Int pocCurr;

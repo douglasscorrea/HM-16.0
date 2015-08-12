@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 {
   TAppEncTop  cTAppEncTop;
   //DI_Begin
-  floatingClass acessData;
+  floatingClass acessAppEncTop;
   //DI_END
   
   //DANIEL BEGIN
@@ -111,10 +111,11 @@ int main(int argc, char* argv[])
   // call encoding function
   //DIBEGIN
   //Adicionando parametros no encode
-  cTAppEncTop.encode(&acessData);
+  cTAppEncTop.encode(&acessAppEncTop);
   
-  printf("Dado TAppEncTop: %d\n", acessData.getMaxTlayer());
-  //printf("Dado TEncTop: %d\n", acessData.getNumCoded());
+  printf("Dado TAppEncTop_v2: %d\n", acessAppEncTop.getMaxTlayer());
+  printf("Dado TEncTop_v2: %d\n", acessAppEncTop.getTestEncTop());
+  printf("Dado TEncGOP_v2: %d\n", acessAppEncTop.getTestGOP());
   //DI_END
   
   // ending time

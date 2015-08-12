@@ -340,8 +340,11 @@ Void TEncTop::deletePicBuffer()
  \retval  rcListBitstreamOut  list of output bitstreams
  \retval  iNumEncoded         number of encoded pictures
  */
-Void TEncTop::encode( Bool flush, TComPicYuv* pcPicYuvOrg, TComPicYuv* pcPicYuvTrueOrg, const InputColourSpaceConversion snrCSC, TComList<TComPicYuv*>& rcListPicYuvRecOut, std::list<AccessUnit>& accessUnitsOut, Int& iNumEncoded )
+//DI BEGIN
+//adicionando argumentos
+Void TEncTop::encode( floatingClass *acessEncTop, Bool flush, TComPicYuv* pcPicYuvOrg, TComPicYuv* pcPicYuvTrueOrg, const InputColourSpaceConversion snrCSC, TComList<TComPicYuv*>& rcListPicYuvRecOut, std::list<AccessUnit>& accessUnitsOut, Int& iNumEncoded )
 {
+//DI END
   if (pcPicYuvOrg != NULL)
   {
     // get original YUV
@@ -363,15 +366,26 @@ Void TEncTop::encode( Bool flush, TComPicYuv* pcPicYuvOrg, TComPicYuv* pcPicYuvT
     iNumEncoded = 0;
     return;
   }
-
+  //DI BEGIN
+  //criando variável para teste
+  int test = 43;
+  acessEncTop->testEncTop = test;
+  //DI END
+  
   if ( m_RCEnableRateControl )
   {
     m_cRateCtrl.initRCGOP( m_iNumPicRcvd );
   }
 
+  //DI BEGIN
+  //adicionando argumentos
   // compress GOP
-  m_cGOPEncoder.compressGOP(m_iPOCLast, m_iNumPicRcvd, m_cListPic, rcListPicYuvRecOut, accessUnitsOut, false, false, snrCSC, m_printFrameMSE);
-
+  m_cGOPEncoder.compressGOP(&acessGOP, m_iPOCLast, m_iNumPicRcvd, m_cListPic, rcListPicYuvRecOut, accessUnitsOut, false, false, snrCSC, m_printFrameMSE);
+  
+  
+  //recebendo váriavel de teste do GOP
+  acessEncTop->testGOP = acessGOP.testGOP;
+  //DI END
   if ( m_RCEnableRateControl )
   {
     m_cRateCtrl.destroyRCGOP();
@@ -403,9 +417,11 @@ Void separateFields(Pel* org, Pel* dstField, UInt stride, UInt width, UInt heigh
   }
 
 }
-
-Void TEncTop::encode(Bool flush, TComPicYuv* pcPicYuvOrg, TComPicYuv* pcPicYuvTrueOrg, const InputColourSpaceConversion snrCSC, TComList<TComPicYuv*>& rcListPicYuvRecOut, std::list<AccessUnit>& accessUnitsOut, Int& iNumEncoded, Bool isTff)
+//DI BEGIN
+//adicionando argumentos
+Void TEncTop::encode(floatingClass *acessEncTop, Bool flush, TComPicYuv* pcPicYuvOrg, TComPicYuv* pcPicYuvTrueOrg, const InputColourSpaceConversion snrCSC, TComList<TComPicYuv*>& rcListPicYuvRecOut, std::list<AccessUnit>& accessUnitsOut, Int& iNumEncoded, Bool isTff)
 {
+//DI END
   iNumEncoded = 0;
 
   for (Int fieldNum=0; fieldNum<2; fieldNum++)
@@ -471,9 +487,15 @@ Void TEncTop::encode(Bool flush, TComPicYuv* pcPicYuvOrg, TComPicYuv* pcPicYuvTr
 
     if ( m_iNumPicRcvd && ((flush&&fieldNum==1) || (m_iPOCLast/2)==0 || m_iNumPicRcvd==m_iGOPSize ) )
     {
+      //DI BEGIN
+      //adicionando argumentos
       // compress GOP
-      m_cGOPEncoder.compressGOP(m_iPOCLast, m_iNumPicRcvd, m_cListPic, rcListPicYuvRecOut, accessUnitsOut, true, isTff, snrCSC, m_printFrameMSE);
-
+      m_cGOPEncoder.compressGOP(&acessGOP, m_iPOCLast, m_iNumPicRcvd, m_cListPic, rcListPicYuvRecOut, accessUnitsOut, true, isTff, snrCSC, m_printFrameMSE);
+      
+      //recebendo variável de teste do GOP
+      acessEncTop->testGOP = acessGOP.testGOP;
+      //DI END
+      
       iNumEncoded += m_iNumPicRcvd;
       m_uiNumAllPicCoded += m_iNumPicRcvd;
       m_iNumPicRcvd = 0;

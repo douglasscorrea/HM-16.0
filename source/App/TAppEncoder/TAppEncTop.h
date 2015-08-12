@@ -91,11 +91,14 @@ protected:
   Void printChromaFormat();
 
 public:
+  //DI BEGIN
+  floatingClass acessEncTop;
+  //DI END
   TAppEncTop();
   virtual ~TAppEncTop();
   //DIBEGIN
   //Adicionando parametros no encode
-  Void        encode      (floatingClass *acessData);                               ///< main encoding function
+  Void        encode      (floatingClass *acessAppEncTop);                               ///< main encoding function
   //DIEND
   TEncTop&    getTEncTop  ()   { return  m_cTEncTop; }      ///< return encoder class pointer reference
 
