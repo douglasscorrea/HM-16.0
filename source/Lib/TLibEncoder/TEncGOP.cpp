@@ -531,7 +531,7 @@ Void TEncGOP::xCreateLeadingSEIMessages (/*SEIMessages seiMessages,*/ AccessUnit
 // ====================================================================================================================
 // Public member functions
 // ====================================================================================================================
-//DI - adicionando argumento
+//DI - adicionando o parâmetro "floatingClass *acessGOP" ao compressGOP
 Void TEncGOP::compressGOP( floatingClass *acessGOP, Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rcListPic,
                            TComList<TComPicYuv*>& rcListPicYuvRecOut, std::list<AccessUnit>& accessUnitsInGOP,
                            Bool isField, Bool isTff, const InputColourSpaceConversion snr_conversion, const Bool printFrameMSE )
@@ -576,8 +576,11 @@ Void TEncGOP::compressGOP( floatingClass *acessGOP, Int iPOCLast, Int iNumPicRcv
   //DI BEGIN
   //usando IRAPGOPid como teste
   acessGOP->testGOP = IRAPGOPid;
+              
+  //adicionando mais testes
+  acessGOP->GOPSize = m_iGopSize;
   //DI END
-  
+
   if(isField)
   {
     Int pocCurr;
@@ -1155,8 +1158,11 @@ Void TEncGOP::compressGOP( floatingClass *acessGOP, Int iPOCLast, Int iNumPicRcv
 
     Int  p, j;
     UInt uiEncCUAddr;
-
-    pcPic->getPicSym()->initTiles(pcSlice->getPPS());
+    
+    //DI BEGIN
+    //adicionando argumento ao initTiles
+    pcPic->getPicSym()->initTiles(acessGOP, pcSlice->getPPS());
+    //DI END
 
     // Allocate some coders, now we know how many tiles there are.
     const Int iNumSubstreams = pcSlice->getPPS()->getNumSubstreams();

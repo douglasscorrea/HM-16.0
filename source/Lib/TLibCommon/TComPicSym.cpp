@@ -193,8 +193,15 @@ UInt TComPicSym::getPicSCUAddr( UInt SCUEncOrder )
   return getCUOrderMap(SCUEncOrder/m_uiNumPartitions)*m_uiNumPartitions + SCUEncOrder%m_uiNumPartitions;
 }
 
-Void TComPicSym::initTiles(TComPPS *pps)
+//DI BEGIN
+//adicionando parâmetro ao initTiles
+Void TComPicSym::initTiles(floatingClass *acessGOP, TComPPS *pps)
 {
+
+  //teste impressão
+  printf("Imprimindo no PicSym: %d\n", acessGOP->getTestGOP());
+  //DI END
+  
   //set NumColumnsMinus1 and NumRowsMinus1
   setNumColumnsMinus1( pps->getNumTileColumnsMinus1() );
   setNumRowsMinus1( pps->getTileNumRowsMinus1() );
@@ -205,7 +212,12 @@ Void TComPicSym::initTiles(TComPPS *pps)
 
   // allocate memory for tile parameters
   m_tileParameters.resize(numTiles);
-
+  
+  //DI BEGIN
+  //adicionando mais testes
+  printf("Imprimindo no PicSym_GOPSize: %d\n", acessGOP->getGOPSize());
+  //DI END
+  
   if( pps->getTileUniformSpacingFlag() )
   {
     //set width and height for each (uniform) tile

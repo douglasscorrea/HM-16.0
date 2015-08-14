@@ -560,7 +560,11 @@ Bool TDecTop::xDecodeSlice(InputNALUnit &nalu, Int &iSkipFrame, Int iPOCLastDisp
   Bool bNextSlice     = pcSlice->isNextSlice();
 
   UInt i;
-  pcPic->getPicSym()->initTiles(pcSlice->getPPS());
+  
+  //DI BEGIN
+  //adicionando argumento para completar a chamada do método
+  pcPic->getPicSym()->initTiles(&pointer, pcSlice->getPPS());
+  //DI END
 
   //generate the Coding Order Map and Inverse Coding Order Map
   UInt uiEncCUAddr;

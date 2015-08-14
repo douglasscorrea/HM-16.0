@@ -137,11 +137,13 @@ public:
   Void  destroy     ();
 
   Void  init        ( TEncTop* pcTEncTop );
+  
   //DI BEGIN
   //adicionando parâmetros
   Void  compressGOP ( floatingClass *acessGOP, Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rcListPic, TComList<TComPicYuv*>& rcListPicYuvRec,
                       std::list<AccessUnit>& accessUnitsInGOP, Bool isField, Bool isTff, const InputColourSpaceConversion snr_conversion, const Bool printFrameMSE );
   //DI END
+  
   Void  xAttachSliceDataToNalUnit (OutputNALUnit& rNalu, TComOutputBitstream*& rpcBitstreamRedirect);
 
 

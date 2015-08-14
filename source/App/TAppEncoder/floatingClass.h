@@ -15,9 +15,11 @@ public:
     int maxTlayer;
     int testEncTop;
     int testGOP;
-    int getTestEncTop () { return testEncTop; }
+    int GOPSize;
     int getMaxTlayer () { return maxTlayer; }
+    int getTestEncTop () { return testEncTop; }
     int getTestGOP () { return testGOP; }
+    int getGOPSize () {return GOPSize; } 
 
 };
 

@@ -415,7 +415,7 @@ Void TAppEncTop::xInitLib(Bool isFieldCoding)
  .
  */
 //DI BEGIN
-//Adicionando argumento no encode
+//Adicionando parâmetro no encode
 Void TAppEncTop::encode(floatingClass *acessAppEncTop)
 {
   //lendo dado do AppEncTop.cpp e salvando na classe
@@ -484,15 +484,15 @@ Void TAppEncTop::encode(floatingClass *acessAppEncTop)
       m_cTEncTop.setFramesToBeEncoded(m_iFrameRcvd);
     }
     //DI BEGIN
-    //adicionando argumentos na chamada das funções
     // call encoding function for one frame
+    //adicionando argumentos na chamada dos métodos (encode)
     if ( m_isField ) m_cTEncTop.encode(&acessEncTop, bEos, flush ? 0 : pcPicYuvOrg, flush ? 0 : &cPicYuvTrueOrg, snrCSC, m_cListPicYuvRec, outputAccessUnits, iNumEncoded, m_isTopFieldFirst );
     else             m_cTEncTop.encode(&acessEncTop, bEos, flush ? 0 : pcPicYuvOrg, flush ? 0 : &cPicYuvTrueOrg, snrCSC, m_cListPicYuvRec, outputAccessUnits, iNumEncoded );
     
     //recebendo teste do TEncTop
     acessAppEncTop->testEncTop = acessEncTop.testEncTop;
+    //recebendo teste do TEncGOP
     acessAppEncTop->testGOP = acessEncTop.testGOP;
-
     //DI END
     
     // write bistream to file if necessary

@@ -61,6 +61,7 @@
 //DI BEGIN
 #include "../../App/TAppEncoder/floatingClass.h"
 //DI END
+
 //! \ingroup TLibEncoder
 //! \{
 
@@ -201,6 +202,7 @@ public:
                TComList<TComPicYuv*>& rcListPicYuvRecOut,
                std::list<AccessUnit>& accessUnitsOut, Int& iNumEncoded, Bool isTff);
   //DI END
+  
   Void printSummary(Bool isField) { m_cGOPEncoder.printOutSummary (m_uiNumAllPicCoded, isField, m_printMSEBasedSequencePSNR, m_printSequenceMSE); }
 
 };

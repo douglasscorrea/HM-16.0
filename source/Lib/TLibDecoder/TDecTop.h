@@ -51,6 +51,11 @@
 #include "TDecCAVLC.h"
 #include "SEIread.h"
 
+//DI BEGIN
+//adicionando para completar chamada initTiles
+#include "../../App/TAppEncoder/floatingClass.h"
+//DI END
+
 struct InputNALUnit;
 
 //! \ingroup TLibDecoder
@@ -64,6 +69,11 @@ struct InputNALUnit;
 class TDecTop
 {
 private:
+    
+  //DI BEGIN
+  floatingClass pointer;
+  //DI END
+  
   Int                     m_iMaxRefPicNum;
 
   NalUnitType             m_associatedIRAPType; ///< NAL unit type of the associated IRAP picture

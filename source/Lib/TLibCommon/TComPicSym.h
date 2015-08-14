@@ -46,6 +46,10 @@
 class TComSampleAdaptiveOffset;
 class TComPPS;
 
+//DI BEGIN
+#include "../../App/TAppEncoder/floatingClass.h"
+//DI END
+
 //! \ingroup TLibCommon
 //! \{
 
@@ -142,7 +146,12 @@ public:
   UInt         getInverseCUOrderMap( Int cuAddr )                    { return *(m_puiInverseCUOrderMap + (cuAddr>=m_uiNumCUsInFrame ? m_uiNumCUsInFrame : cuAddr)); }
   UInt         getPicSCUEncOrder( UInt SCUAddr );
   UInt         getPicSCUAddr( UInt SCUEncOrder );
-  Void         initTiles(TComPPS *pps);
+  
+  //DI BEGIN
+  //adicionando parâmetro ao initTiles
+  Void         initTiles(floatingClass *acessGOP, TComPPS *pps);
+  //DI END
+  
   UInt         xCalculateNxtCUAddr( UInt uiCurrCUAddr );
   SAOBlkParam* getSAOBlkParam() { return m_saoBlkParams;}
   Void deriveLoopFilterBoundaryAvailibility(Int ctu, Bool& isLeftAvail,Bool& isRightAvail,Bool& isAboveAvail,Bool& isBelowAvail,Bool& isAboveLeftAvail,Bool& isAboveRightAvail,Bool& isBelowLeftAvail,Bool& isBelowRightAvail);
