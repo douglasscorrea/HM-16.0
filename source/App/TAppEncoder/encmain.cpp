@@ -34,8 +34,9 @@
 /** \file     encmain.cpp
     \brief    Encoder application main
 */
-
+//DI BEGIN
 #include <time.h>
+//DI END
 #include <iostream>
 #include "TAppEncTop.h"
 #include "TAppCommon/program_options_lite.h"
@@ -44,8 +45,13 @@
 #include "floatingClass.h"
 //DI END
 
+//DI BEGIN
+int flagUniformSpc; //Cauane
+Bool flagBestCU = false;
 FILE *time_perCU, *time_perTile;
 double time_tile[100];
+ifstream inputTileInfo;
+//DI END
 
 //! \ingroup TAppEncoder
 //! \{
@@ -127,6 +133,11 @@ int main(int argc, char* argv[])
   // destroy application encoder class
   cTAppEncTop.destroy();
 
+  
+    if(!flagUniformSpc) //Cauane
+  {
+    inputTileInfo.close();
+  }
   return 0;
 }
 

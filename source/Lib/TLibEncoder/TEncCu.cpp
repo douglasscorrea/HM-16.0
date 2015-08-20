@@ -45,6 +45,10 @@
 #include <algorithm>
 using namespace std;
 
+//DI BEGIN
+Int* sumLCUPartitions;      //Array to store the sum of partitions - Cauane
+Int myPOC = -1;
+//DI END
 
 //! \ingroup TLibEncoder
 //! \{
@@ -1048,7 +1052,47 @@ Void TEncCu::xEncodeCU( TComDataCU* pcCU, UInt uiAbsPartIdx, UInt uiDepth )
   {
     bBoundary = true;
   }
-
+  
+  //DI BEGIN
+   if(pcSlice->getPOC() != myPOC){
+      //initialize the array with zeros
+      sumLCUPartitions = new Int[pcPic->getNumCUsInFrame()];
+      for(int k=0; k<pcPic->getNumCUsInFrame(); k++)
+          sumLCUPartitions[k] = 0;
+      
+      //initialize the array on the beginning of each new POC
+      myPOC = pcSlice->getPOC();
+  }
+ 
+  //Pic the number of PUs per LCU - Cauane [START]
+  Int cuPart = 0;
+  
+  if (uiDepth == pcCU->getDepth(uiAbsPartIdx)){
+      switch(pcCU->getPartitionSize(uiAbsPartIdx)){
+        case SIZE_2Nx2N: cuPart = 1;
+                         break;
+        case SIZE_2NxN: cuPart = 2;
+                         break;
+        case SIZE_Nx2N: cuPart = 2;
+                         break;
+        case SIZE_2NxnU: cuPart = 2;
+                         break;
+        case SIZE_2NxnD: cuPart = 2;
+                         break;
+        case SIZE_nRx2N: cuPart = 2;
+                         break;
+        case SIZE_nLx2N: cuPart = 2;
+                         break;
+        default: cuPart = 4;
+                 break;                                 
+      }
+  }
+  
+  //sum of partitions per LCU
+  sumLCUPartitions[pcCU->getAddr()] = sumLCUPartitions[pcCU->getAddr()] + cuPart; 
+  //Pic the number of PUs per LCU - Cauane [END]    
+  //DI END
+  
   if( ( ( uiDepth < pcCU->getDepth( uiAbsPartIdx ) ) && ( uiDepth < (g_uiMaxCUDepth-g_uiAddCUDepth) ) ) || bBoundary )
   {
     UInt uiQNumParts = ( pcPic->getNumPartInCU() >> (uiDepth<<1) )>>2;

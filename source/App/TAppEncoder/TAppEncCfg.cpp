@@ -44,12 +44,28 @@
 #include "TAppEncCfg.h"
 #include "TAppCommon/program_options_lite.h"
 #include "TLibEncoder/TEncRateCtrl.h"
+//DI BEGIN
+#include "TLibCommon/TComPicSym.h"
+#include "TLibCommon/TComPic.h"
+#include <fstream> 
+#include <iostream>
+//DI END
+
 #ifdef WIN32
 #define strdup _strdup
 #endif
 
 #define MACRO_TO_STRING_HELPER(val) #val
 #define MACRO_TO_STRING(val) MACRO_TO_STRING_HELPER(val)
+
+//DI BEGIN
+extern ifstream inputTileInfo; //Tile info input - Cauane
+extern int flagUniformSpc;
+Int adaptiveTilesFlag;          //Flag which controls if the adaptive tiling technique will be employed - Cauane
+string firstFrameTilingMethod;    //Var which controls the first frame tiling partitioning method - Cauane
+string tilingMethod;            //Var that controls the tiling method of the encoding process, excluding the first frame - Cauane
+Int refreshTiling;              //Refresh tiling pattern after a GOP - Cauane
+//DI END
 
 using namespace std;
 namespace po = df::program_options_lite;
@@ -603,7 +619,9 @@ automaticallySelectRExtProfile(const Bool bUsingGeneralRExtTools,
 Bool TAppEncCfg::parseCfg( Int argc, Char* argv[] )
 {
   Bool do_help = false;
-
+  //DI BEGIN
+  string tileInputFile; //Cauane
+  //DI END
   string cfg_InputFile;
   string cfg_BitstreamFile;
   string cfg_ReconFile;
@@ -656,6 +674,13 @@ Bool TAppEncCfg::parseCfg( Int argc, Char* argv[] )
 
   // File, I/O and source parameters
   ("InputFile,i",                                     cfg_InputFile,                               string(""), "Original YUV input file name")
+  //DI BEGIN
+  ("TileInputFile",         tileInputFile,     string(""), "Tile Input File") //Cauane
+  ("AdaptiveTiles", adaptiveTilesFlag, 0, "Adaptive Tiling Technique") //Cauane
+  ("FirstFrameTilingMethod", firstFrameTilingMethod, string(""), "First Frame Tiling Method") //Cauane
+  ("TilingMethod", tilingMethod, string(""), "Tiling Method for Consecutive Frames") //Cauane
+  ("RefreshTiling", refreshTiling, 0, "Refresh Tiling Pattern after a GOP") //Cauane
+  //DI END
   ("BitstreamFile,b",                                 cfg_BitstreamFile,                           string(""), "Bitstream output file name")
   ("ReconFile,o",                                     cfg_ReconFile,                               string(""), "Reconstructed YUV output file name")
   ("SourceWidth,-wdt",                                m_iSourceWidth,                                       0, "Source picture width")
@@ -2289,8 +2314,18 @@ Void TAppEncCfg::xPrintParameter()
   }
 
   printf("Max Num Merge Candidates          : %d\n", m_maxNumMergeCand);
+  
+  /*DI BEGIN
+  printf("Total Tile Number            : %d\n", (m_iNumColumnsMinus1+1)*(m_iNumRowsMinus1+1));
+  printf("Tiles Along Rows             : %d\n", (m_iNumRowsMinus1+1));
+  printf("Tiles Along Columns          : %d\n", (m_iNumColumnsMinus1+1));
+  printf("Adaptive Tiling Technique    : %d\n", adaptiveTilesFlag);
+  printf("First Frame Tiling Method    : %s\n", firstFrameTilingMethod.c_str());
+  printf("Tiling Method                : %s\n", tilingMethod.c_str());
+  printf("Refresh Tiling               : %d\n", refreshTiling);
+  DI END*/
+  
   printf("\n");
-
   printf("TOOL CFG: ");
   printf("IBD:%d ", ((g_bitDepth[CHANNEL_TYPE_LUMA] > m_MSBExtendedBitDepth[CHANNEL_TYPE_LUMA]) || (g_bitDepth[CHANNEL_TYPE_CHROMA] > m_MSBExtendedBitDepth[CHANNEL_TYPE_CHROMA])));
   printf("HAD:%d ", m_bUseHADME           );
