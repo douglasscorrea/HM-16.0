@@ -149,7 +149,7 @@ public:
   
   //DI BEGIN
   //adicionando parâmetro ao initTiles
-  Void         initTiles(floatingClass *acessGOP, TComPPS *pps);
+  Void         initTiles(floatingClass *acessGOP, TComPPS *pps, TComPic *pcPic);
   //DI END
   
   UInt         xCalculateNxtCUAddr( UInt uiCurrCUAddr );

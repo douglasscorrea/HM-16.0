@@ -54,6 +54,14 @@ using namespace std;
 extern FILE *time_perTile;
 extern double time_tile[100];
 
+//DI BEGIN
+extern Int adaptiveTilesFlag; //flag that controls if the adaptive tiling technique will be employed - Cauane
+extern string firstFrameTilingMethod; //controls which tiling method will be used in the first frame - Cauane
+extern string tilingMethod; //controls the tiling method used during the encoding - Cauane
+extern Int refreshTiling; //controls if the tiling partitioning will be refreshed after a GOP - Cauane
+extern Int* sumLCUPartitions;
+//DI END
+
 #if RExt__ENVIRONMENT_VARIABLE_DEBUG_AND_TEST
 Bool g_bFinalEncode = false;
 #endif
@@ -578,7 +586,7 @@ Void TEncGOP::compressGOP( floatingClass *acessGOP, Int iPOCLast, Int iNumPicRcv
   acessGOP->testGOP = IRAPGOPid;
               
   //adicionando mais testes
-  acessGOP->GOPSize = m_iGopSize;
+  acessGOP->m_iGopSize = m_iGopSize;
   //DI END
 
   if(isField)
@@ -1160,8 +1168,16 @@ Void TEncGOP::compressGOP( floatingClass *acessGOP, Int iPOCLast, Int iNumPicRcv
     UInt uiEncCUAddr;
     
     //DI BEGIN
+    //INICIALIZAÇAO DA CLASSE
+    acessGOP->adaptiveTilesFlag = adaptiveTilesFlag;
+    acessGOP->firstFrameTilingMethod = firstFrameTilingMethod;
+    acessGOP->refreshTiling = refreshTiling;
+    acessGOP->sumLCUPartitions = sumLCUPartitions;
+    acessGOP->frameHeightInCU = pcPic->getFrameHeightInCU();
+    acessGOP->frameWidthInCU = pcPic->getFrameWidthInCU();
+    
     //adicionando argumento ao initTiles
-    pcPic->getPicSym()->initTiles(acessGOP, pcSlice->getPPS());
+    pcPic->getPicSym()->initTiles(acessGOP, pcSlice->getPPS(), pcPic);
     //DI END
 
     // Allocate some coders, now we know how many tiles there are.
@@ -1183,7 +1199,9 @@ Void TEncGOP::compressGOP( floatingClass *acessGOP, Int iPOCLast, Int iNumPicRcv
 
     UInt startCUAddrSliceIdx = 0; // used to index "m_uiStoredStartCUAddrForEncodingSlice" containing locations of slice boundaries
     UInt startCUAddrSlice    = 0; // used to keep track of current slice's starting CU addr.
+    //teste de print
     pcSlice->setSliceCurStartCUAddr( startCUAddrSlice ); // Setting "start CU addr" for current slice
+    printf("TESTE: %d", pcSlice->getSliceCurStartCUAddr ());
     m_storedStartCUAddrForEncodingSlice.clear();
 
     UInt startCUAddrSliceSegmentIdx = 0; // used to index "m_uiStoredStartCUAddrForEntropyEncodingSlice" containing locations of slice boundaries
