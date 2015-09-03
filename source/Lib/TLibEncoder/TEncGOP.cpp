@@ -1175,7 +1175,7 @@ Void TEncGOP::compressGOP( floatingClass *acessGOP, Int iPOCLast, Int iNumPicRcv
     acessGOP->sumLCUPartitions = sumLCUPartitions;
     acessGOP->frameHeightInCU = pcPic->getFrameHeightInCU();
     acessGOP->frameWidthInCU = pcPic->getFrameWidthInCU();
-    
+
     //adicionando argumento ao initTiles
     pcPic->getPicSym()->initTiles(acessGOP, pcSlice->getPPS(), pcPic);
     //DI END
@@ -1199,9 +1199,7 @@ Void TEncGOP::compressGOP( floatingClass *acessGOP, Int iPOCLast, Int iNumPicRcv
 
     UInt startCUAddrSliceIdx = 0; // used to index "m_uiStoredStartCUAddrForEncodingSlice" containing locations of slice boundaries
     UInt startCUAddrSlice    = 0; // used to keep track of current slice's starting CU addr.
-    //teste de print
     pcSlice->setSliceCurStartCUAddr( startCUAddrSlice ); // Setting "start CU addr" for current slice
-    printf("TESTE: %d", pcSlice->getSliceCurStartCUAddr ());
     m_storedStartCUAddrForEncodingSlice.clear();
 
     UInt startCUAddrSliceSegmentIdx = 0; // used to index "m_uiStoredStartCUAddrForEntropyEncodingSlice" containing locations of slice boundaries

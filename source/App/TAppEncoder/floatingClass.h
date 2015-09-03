@@ -8,12 +8,10 @@
 #ifndef FLOATINGCLASS_H
 #define	FLOATINGCLASS_H
 
-//#include <cstring>
-//#include <string>
+
 #include "../../Lib/TLibCommon/TypeDef.h"
 
 using namespace std;
-        
 class floatingClass
 {
     
@@ -30,8 +28,6 @@ public:
     UInt frameWidthInCU;
     string firstFrameTilingMethod;
     string tilingMethod;
-
-
     int getMaxTlayer () { return maxTlayer; }
     int getTestEncTop () { return testEncTop; }
     int getTestGOP () { return testGOP; }
