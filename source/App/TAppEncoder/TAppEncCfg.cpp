@@ -1081,6 +1081,10 @@ Bool TAppEncCfg::parseCfg( Int argc, Char* argv[] )
     }
     else if (cfg_ColumnWidth.values.size() < m_numTileColumnsMinus1)
     {
+      //DI BEGIN
+      std::cout << "1. size: " << cfg_ColumnWidth.values.size() << '\n';
+      printf("numTile: %d\n", m_numTileColumnsMinus1);
+      //DI END
       printf( "The width of some columns is not defined.\n" );
       exit( EXIT_FAILURE );
     }

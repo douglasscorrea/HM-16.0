@@ -88,7 +88,7 @@ TileColumnWidthArray                : 2 3              # Array containing tile c
 NumTileRowsMinus1                   : 0                # Number of tile rows in a picture minus 1
 TileRowHeightArray                  : 2                # Array containing tile row height values in units of CTU (from top to bottom in picture)
 
-LFCrossTileBoundaryFlag             : 0                # In-loop filtering is across or not across tile boundary.
+LFCrossTileBoundaryFlag             : 1                # In-loop filtering is across or not across tile boundary.
                                                        # 0:not across, 1: across 
 
 #============ WaveFront ================

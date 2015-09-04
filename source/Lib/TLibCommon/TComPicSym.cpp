@@ -593,7 +593,7 @@ Void TComPicSym::initTiles(floatingClass *acessGOP, TComPPS *pps, TComPic *pcPic
 {
 
   //teste impressão
-  printf("Imprimindo no PicSym: %d\n", acessGOP->getTestGOP());
+  //printf("Imprimindo no PicSym: %d\n", acessGOP->getTestGOP());
   //DI END
   
   //set NumColumnsMinus1 and NumRowsMinus1
@@ -609,7 +609,7 @@ Void TComPicSym::initTiles(floatingClass *acessGOP, TComPPS *pps, TComPic *pcPic
   
   //DI BEGIN
   //adicionando mais testes
-  printf("Imprimindo no PicSym_GOPSize: %d\n", acessGOP->getGOPSize());
+  //printf("Imprimindo no PicSym_GOPSize: %d\n", acessGOP->getGOPSize());
   //DI END
   
   //DI BEGIN
@@ -636,7 +636,10 @@ Void TComPicSym::initTiles(floatingClass *acessGOP, TComPPS *pps, TComPic *pcPic
     
   if( pps->getTileUniformSpacingFlag() )
   {
-    //set width and height for each (uniform) tile
+    //DI BEGIN;
+    firstFrame = 0; //after creating the bitMtx, the flag is set to 0 - Cauane
+    //DI END
+      //set width and height for each (uniform) tile
     for(Int row=0; row < numRows; row++)
     {
       for(Int col=0; col < numCols; col++)
@@ -651,7 +654,7 @@ Void TComPicSym::initTiles(floatingClass *acessGOP, TComPPS *pps, TComPic *pcPic
   }
   else
   {
- //if the adaptive partitioning technique is enabled, employ the algorithm - Cauane
+    //if the adaptive partitioning technique is enabled, employ the algorithm - Cauane
         //if it is not, use the Tile's sizes defined in the cfg. file
         if(acessGOP->adaptiveTilesFlag == 1){
             UInt rowBoundaries = getNumRowsMinus1();
@@ -779,6 +782,7 @@ Void TComPicSym::initTiles(floatingClass *acessGOP, TComPPS *pps, TComPic *pcPic
                 }
             }  
         //DI END
+    }
         
     //set the width for each tile
     for(Int row=0; row < numRows; row++)
@@ -803,6 +807,7 @@ Void TComPicSym::initTiles(floatingClass *acessGOP, TComPPS *pps, TComPic *pcPic
       }
       m_tileParameters[getNumRowsMinus1() * numCols + col].setTileHeight( getFrameHeightInCU()-cumulativeTileHeight );
     }
+ 
   }
 
 #if TILE_SIZE_CHECK
@@ -882,7 +887,6 @@ Void TComPicSym::initTiles(floatingClass *acessGOP, TComPPS *pps, TComPic *pcPic
     m_puiTileIdxMap[i] = rowIdx * numCols + columnIdx;
   }
 }
-}
 
 UInt TComPicSym::xCalculateNxtCUAddr( UInt uiCurrCUAddr )
 {
@@ -954,10 +958,16 @@ Void TComPicSym::deriveLoopFilterBoundaryAvailibility(Int ctu,
     TComDataCU* ctuBelowLeft  = isBelowLeftAvail ? getCU(ctu+m_uiWidthInCU-1):NULL;
     TComDataCU* ctuBelowRight = isBelowRightAvail? getCU(ctu+m_uiWidthInCU+1):NULL;
 
+    //DI BEGIN
+    //std::cout << "getCU: " << getCU(ctu+1) << " - ctu: " << ctu+1 << '\n';
+    //fputs(isRightAvail ? "Right: true\n" : "Right: false\n", stdout);
+    //fputs(isLeftAvail ? "Left: true\n" : "Left: false\n", stdout);
+    //DI END
     {
       //left
       if(ctuLeft != NULL)
       {
+        //printf("ctuLeft: %d\n", ctuLeft->getSlice()->getSliceCurStartCUAddr());
         isLeftAvail = (ctuCurr->getSlice()->getSliceCurStartCUAddr() != ctuLeft->getSlice()->getSliceCurStartCUAddr())?ctuCurr->getSlice()->getLFCrossSliceBoundaryFlag():true;
       }
       //above
@@ -968,9 +978,14 @@ Void TComPicSym::deriveLoopFilterBoundaryAvailibility(Int ctu,
       //right
       if(ctuRight != NULL)
       {
-          printf("1 - %d\n", ctuCurr->getSlice()->getSliceCurStartCUAddr());
-          printf("2 - %d\n", ctuRight->getSlice()->getSliceCurStartCUAddr());
-          printf("3 - %d\n", ctuRight->getSlice()->getSliceCurStartCUAddr());
+          //DI BEGIN
+          //printf("ctuRight 3: %d\n", ctuRight->getAddr());
+          //printf("PRINT 1 - %d\n", ctuCurr->getSlice()->getSliceCurStartCUAddr());
+          //printf("AQUI 3\n");
+          //printf("PRINT 2 - %d\n", ctuRight->getSlice()->getSliceCurStartCUAddr());
+          //printf("PRINT 3 - %d\n", ctuRight->getSlice()->getSliceCurStartCUAddr());
+          //printf("AQUI 4\n");
+          //DI END
         isRightAvail = (ctuCurr->getSlice()->getSliceCurStartCUAddr() != ctuRight->getSlice()->getSliceCurStartCUAddr())?ctuRight->getSlice()->getLFCrossSliceBoundaryFlag():true;
       }
       //below

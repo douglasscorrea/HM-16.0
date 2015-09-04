@@ -1201,7 +1201,7 @@ Void TEncGOP::compressGOP( floatingClass *acessGOP, Int iPOCLast, Int iNumPicRcv
     UInt startCUAddrSlice    = 0; // used to keep track of current slice's starting CU addr.
     //teste de print
     pcSlice->setSliceCurStartCUAddr( startCUAddrSlice ); // Setting "start CU addr" for current slice
-    printf("TESTE: %d", pcSlice->getSliceCurStartCUAddr ());
+    printf("start CU addr: %d\n", pcSlice->getSliceCurStartCUAddr ());
     m_storedStartCUAddrForEncodingSlice.clear();
 
     UInt startCUAddrSliceSegmentIdx = 0; // used to index "m_uiStoredStartCUAddrForEntropyEncodingSlice" containing locations of slice boundaries
